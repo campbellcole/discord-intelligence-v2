@@ -1,5 +1,6 @@
 import threading
 import os
+import numpy as np
 from keras.models import Sequential, load_model
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM, SimpleRNN
@@ -8,7 +9,7 @@ import ModelHandler
 
 class Trainer(threading.Thread):
 
-	def __init__(self, modelPath, model, X, y, vocsize, ix_to_char, chars, batch_size = 50, epochs = 50):
+	def __init__(self, modelPath, model, X, y, vocsize, ix_to_char, chars, batch_size, epochs):
 		self.modelPath = modelPath
 		self.model = model
 		self.epochs = epochs
@@ -30,8 +31,21 @@ class Trainer(threading.Thread):
 		ep = 0
 		while True:
 			print('\n\nEpochs: {}\n'.format(ep))
-			model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, nb_epoch=1)
-			model.save(modelPath, overwrite=True)
+			self.model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, nb_epoch=1)
+			self.model.save(modelPath, overwrite=True)
 			ep+=1
 			if ep == epochs:
 				exit()
+
+	def generate(self, initx, length = 10):
+		if initx == None:
+			ix = [np.random.randint(self.vocsize)]
+		else:
+			ix = [initx]
+		y_char = [self.ix_to_char[ix[-1]]]
+		X = np.zeros((1, length, self.vocsize))
+		for i in range(length):
+			X[0, i, :][ix[-1]] = 1
+			ix = np.argmax(self.model.predict(X[:, :i+1, :])[0], 1)
+			y_char.append(self.ix_to_char[ix[-1]])
+		return ('').join(y_char)

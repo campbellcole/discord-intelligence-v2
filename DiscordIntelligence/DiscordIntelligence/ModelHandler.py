@@ -4,23 +4,25 @@ from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM, SimpleRNN
 from keras.layers.wrappers import TimeDistributed
 
-class ModelHandler(object):
+class ModelHandler:
 
-	def __init__(self, HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM, MODEL = None):
-		self.HIDDEN_DIM = HIDDEN_DIM
-		self.VOCAB_SIZE = VOCAB_SIZE
-		self.LAYER_NUM = LAYER_NUM
+	def __init__(self, MODEL = None):
 		self.mdl = MODEL
 
-	def load():
-		return load_model(self.mdl)
+	def load(self):
+		if self.mdl == None:
+			raise ValueError('No model given for loading')
+		m = load_model(self.mdl)
+		if m == None:
+			raise WindowsError('Unable to load model')
+		return m
 
-	def create(self):
+	def create(self, HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM):
 		t = Sequential()
-		t.add(LSTM(self.HIDDEN_DIM, input_shape=(None, self.VOCAB_SIZE), return_sequences=True))
-		for i in range(self.LAYER_NUM - 1):
-			t.add(LSTM(self.HIDDEN_DIM, return_sequences=True))
+		t.add(LSTM(HIDDEN_DIM, input_shape=(None, VOCAB_SIZE), return_sequences=True))
+		for i in range(LAYER_NUM - 1):
+			t.add(LSTM(HIDDEN_DIM, return_sequences=True))
 		t.add(TimeDistributed(Dense(VOCAB_SIZE)))
 		t.add(Activation('softmax'))
-		t.compile(optimizer="rmsprop", loss="categorial_crossentropy")
+		t.compile(loss="categorical_crossentropy", optimizer="rmsprop")
 		return t
