@@ -17,9 +17,9 @@ from ModelHandler import ModelHandler
 from Utils import *
 
 ap = argparse.ArgumentParser();
-ap.add_argument('--data-dir', default='res/study-data.txt')
-ap.add_argument('--alpha-dir', default='res/alphabet.txt')
-ap.add_argument('--model', default='res/checkpoint.hdf5')
+ap.add_argument('--data-dir', default='res\\study-data.txt')
+ap.add_argument('--alpha-dir', default='res\\alphabet.txt')
+ap.add_argument('--model', default='res\\checkpoint.hdf5')
 args = vars(ap.parse_args())
 
 DATA_DIR = args['data_dir']
@@ -38,10 +38,8 @@ mdh = ModelHandler(MODEL)
 mdl = None
 if os.path.isfile(MODEL):
 	mdl = mdh.load()
-	print('loaded model')
 else:
 	mdl = mdh.create(HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM)
-	print('creating new model')
 
 trainer = Trainer(MODEL, mdl, X, y, VOCAB_SIZE, ix_to_char, chars, BATCH_SIZE, EPOCHS)
 
@@ -50,11 +48,11 @@ while not s == "exit":
 	s = input('--> ')
 	cmd = s.split(" ")
 	if cmd[0] == 'gen':
-		genlen = None
+		genlen = 10
 		initx = None
 		try:
 			genlen = int(cmd[1])
-		except ValueError:
+		except Exception:
 			pass
 		try:
 			if cmd[2] in chars:
@@ -64,4 +62,10 @@ while not s == "exit":
 		print("Generating...")
 		print(trainer.generate(initx, genlen))
 	if cmd[0] == 'train':
-		pass
+		try:
+			EPOCHS = int(cmd[1])
+		except Exception:
+			pass
+		print('Training {} times...'.format(EPOCHS))
+		trainer.epochs = EPOCHS
+		trainer.train()

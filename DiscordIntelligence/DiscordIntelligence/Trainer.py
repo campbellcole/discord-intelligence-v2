@@ -28,16 +28,11 @@ class Trainer(threading.Thread):
 		train()
 	
 	def train(self):
-		ep = 0
-		while True:
-			print('\n\nEpochs: {}\n'.format(ep))
-			self.model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, nb_epoch=1)
-			self.model.save(modelPath, overwrite=True)
-			ep+=1
-			if ep == epochs:
-				exit()
+		training = True
+		self.model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, nb_epoch=self.epochs)
+		self.model.save(self.modelPath, overwrite=True)
 
-	def generate(self, initx, length = 10):
+	def generate(self, initx, length):
 		if initx == None:
 			ix = [np.random.randint(self.vocsize)]
 		else:
