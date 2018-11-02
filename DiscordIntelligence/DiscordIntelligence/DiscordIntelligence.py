@@ -12,6 +12,8 @@ from keras.layers.recurrent import LSTM, SimpleRNN
 from keras.layers.wrappers import TimeDistributed
 import argparse
 
+sys.path.append('./TextRNN')
+
 from Trainer import Trainer
 from ModelHandler import ModelHandler
 from Utils import *
@@ -19,7 +21,7 @@ from Utils import *
 ap = argparse.ArgumentParser();
 ap.add_argument('--data-dir', default='res\\study-data.txt')
 ap.add_argument('--alpha-dir', default='res\\alphabet.txt')
-ap.add_argument('--model', default='res\\checkpoint.hdf5')
+ap.add_argument('--model', default='res\\network.hdf5')
 args = vars(ap.parse_args())
 
 DATA_DIR = args['data_dir']
@@ -32,8 +34,6 @@ SEQ_LENGTH = 50
 LAYER_NUM = 2
 EPOCHS = 50
 
-X, y, VOCAB_SIZE, ix_to_char, chars = load_data(DATA_DIR, ALPHA_DIR, SEQ_LENGTH)
-
 mdh = ModelHandler(MODEL)
 mdl = None
 if os.path.isfile(MODEL):
@@ -41,7 +41,7 @@ if os.path.isfile(MODEL):
 else:
 	mdl = mdh.create(HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM)
 
-trainer = Trainer(MODEL, mdl, X, y, VOCAB_SIZE, ix_to_char, chars, BATCH_SIZE, EPOCHS)
+trainer = Trainer(MODEL, mdl, DATA_DIR, ALPHA_DIR)
 
 s = ""
 while not s == "exit":

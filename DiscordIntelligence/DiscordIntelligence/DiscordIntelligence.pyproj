@@ -22,13 +22,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DiscordIntelligence.py" />
-    <Compile Include="ModelHandler.py">
+    <Compile Include="TextRNN\ModelHandler.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Trainer.py">
+    <Compile Include="TextRNN\Trainer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Utils.py">
+    <Compile Include="TextRNN\Utils.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -36,6 +36,7 @@
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="TextRNN\" />
     <Folder Include="res\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

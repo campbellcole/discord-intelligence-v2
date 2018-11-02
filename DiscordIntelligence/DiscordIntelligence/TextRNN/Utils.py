@@ -11,8 +11,8 @@ def load_data(data_dir, alphabet_dir, seq_length):
 
 	data = ''.join([ch for ch in data if ch in chars])
 
-	print('Data length: {} characters'.format(len(data)))
-	print('Vocabulary size: {} characters'.format(VOCAB_SIZE))
+	#print('Data length: {} characters'.format(len(data)))
+	#print('Vocabulary size: {} characters'.format(VOCAB_SIZE))
 
 	ix_to_char = {ix:char for ix, char in enumerate(chars)}
 	char_to_ix = {char:ix for ix, char in enumerate(chars)}
