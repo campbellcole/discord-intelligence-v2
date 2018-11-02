@@ -19,14 +19,16 @@ from ModelHandler import ModelHandler
 from Utils import *
 
 ap = argparse.ArgumentParser();
-ap.add_argument('--data-dir', default='res\\study-data.txt')
-ap.add_argument('--alpha-dir', default='res\\alphabet.txt')
-ap.add_argument('--model', default='res\\network.hdf5')
+ap.add_argument('--data-dir', default='res\\study-data.txt', help='file to read study data from')
+ap.add_argument('--alpha-dir', default='res\\alphabet.txt', help='file containing alphabet to use')
+ap.add_argument('--model', default='res\\network.hdf5', help='path to model to load')
+ap.add_argument('--debug', action='store_true', help='debug/verbose mode')
 args = vars(ap.parse_args())
 
 DATA_DIR = args['data_dir']
 ALPHA_DIR = args['alpha_dir']
 MODEL = args['model']
+DEBUG = args['debug']
 
 BATCH_SIZE = 50
 HIDDEN_DIM = 500
@@ -34,13 +36,21 @@ SEQ_LENGTH = 50
 LAYER_NUM = 2
 EPOCHS = 50
 
+def debug(out):
+	if DEBUG:
+		print(out)
+
+debug('Loading model...')
 mdh = ModelHandler(MODEL)
 mdl = None
 if os.path.isfile(MODEL):
+	debug('Found model. Loading...')
 	mdl = mdh.load()
 else:
+	debug("Couldn't find model. Creating...")
 	mdl = mdh.create(HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM)
 
+debug('Creating trainer...')
 trainer = Trainer(MODEL, mdl, DATA_DIR, ALPHA_DIR)
 
 s = ""
@@ -69,3 +79,5 @@ while not s == "exit":
 		print('Training {} times...'.format(EPOCHS))
 		trainer.epochs = EPOCHS
 		trainer.train()
+
+debug('Exiting...')
