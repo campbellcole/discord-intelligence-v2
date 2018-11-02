@@ -25,6 +25,9 @@
     <Compile Include="TextRNN\ModelHandler.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TextRNN\TextRNN.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TextRNN\Trainer.py">
       <SubType>Code</SubType>
     </Compile>

@@ -1,14 +1,8 @@
-import threading
-import os
 import numpy as np
-from keras.models import Sequential, load_model
-from keras.layers.core import Dense, Activation, Dropout
-from keras.layers.recurrent import LSTM, SimpleRNN
-from keras.layers.wrappers import TimeDistributed
-import ModelHandler
+from keras.models import Sequential
 from Utils import *
 
-class Trainer(threading.Thread):
+class Trainer():
 
 	def __init__(self, modelPath, model, DATA_DIR, ALPHABET_DIR, SEQ_LENGTH = 50, batch_size = 50, epochs = 50):
 		self.modelPath = modelPath
@@ -33,7 +27,7 @@ class Trainer(threading.Thread):
 		self.model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, epochs=self.epochs)
 		self.model.save(self.modelPath, overwrite=True)
 
-	def generate(self, initx, length):
+	def generate(self, length, initx):
 		if initx == None:
 			ix = [np.random.randint(self.vocsize)]
 		else:

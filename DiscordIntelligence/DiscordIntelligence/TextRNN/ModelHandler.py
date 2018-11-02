@@ -6,15 +6,22 @@ from keras.layers.wrappers import TimeDistributed
 
 class ModelHandler:
 
-	def __init__(self, MODEL = None):
-		self.mdl = MODEL
+	def __init__(self, HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM, MODEL = None):
+		self.HIDDEN_DIM = HIDDEN_DIM
+		self.VOCAB_SIZE = VOCAB_SIZE
+		self.LAYER_NUM = LAYER_NUM
+		self.MODEL = MODEL
 
 	def load(self):
-		if self.mdl == None:
+		if self.MODEL == None:
 			raise ValueError('No model given for loading')
-		m = load_model(self.mdl)
+		if os.path.isfile(MODEL):
+			try:
+				m = load_model(self.mdl)
+			except ValueError:
+				m = None
 		if m == None:
-			raise WindowsError('Unable to load model')
+			m = create(self.HIDDEN_DIM, self.VOCAB_SIZE, self.LAYER_NUM)
 		return m
 
 	def create(self, HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM):
