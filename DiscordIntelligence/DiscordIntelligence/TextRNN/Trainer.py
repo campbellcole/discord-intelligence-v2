@@ -30,7 +30,6 @@ class Trainer(threading.Thread):
 		train()
 	
 	def train(self):
-		training = True
 		self.model.fit(self.X, self.y, batch_size=self.batch_size, verbose=1, epochs=self.epochs)
 		self.model.save(self.modelPath, overwrite=True)
 
