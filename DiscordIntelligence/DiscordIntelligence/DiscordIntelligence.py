@@ -43,12 +43,15 @@ client = discord.Client()
 
 @client.event
 async def on_ready():
-	debug("Connected to Discord.")
+	print("Ready.")
 
 @client.event
 async def on_message(message):
-	if message.content.startswith(PREFIX) and not message.author == client.user:
-		debug('Got message: "{}"'.format(message.content)) # remove this later it will cause incredible spam
+	if message.author == client.user:
+		return
+	open(DATA_DIR, 'a', encoding='utf8').write(message.content+'\n')
+	debug('Got message: "{}"'.format(message.content))
+	if message.content.startswith(PREFIX):
 		msg = await client.send_message(message.channel, 'Processing request...')
 		cmd = message.content[len(PREFIX):].strip()
 		spl = cmd.split()

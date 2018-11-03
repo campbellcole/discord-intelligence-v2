@@ -2,15 +2,11 @@ from __future__ import print_function
 import numpy as np
 import re
 
-DEBUG = False
-
 def set_debug(dbg):
-	print('testing1 {}'.format(dbg))
+	global DEBUG
 	DEBUG = dbg
-	print('testing2 {}'.format(DEBUG))
 
 def debug(out):
-	print('testing3 {}'.format(DEBUG))
 	if DEBUG:
 		print(out)
 
