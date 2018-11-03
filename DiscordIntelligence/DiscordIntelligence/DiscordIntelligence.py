@@ -6,9 +6,7 @@ import asyncio
 import sys
 sys.path.append('./TextRNN')
 
-from Trainer import Trainer
-from ModelHandler import ModelHandler
-from Utils import *
+from TextRNN import TextRNN
 
 ap = argparse.ArgumentParser();
 ap.add_argument('--data-dir', default='res\\study-data.txt', help='file to read study data from')
@@ -37,18 +35,8 @@ def debug(out):
 		print(out)
 
 # initialize
-debug('Locating model...')
-mdh = ModelHandler(MODEL)
-mdl = None
-if os.path.isfile(MODEL):
-	debug('Found model. Loading...')
-	mdl = mdh.load()
-else:
-	debug("Couldn't find model. Creating...")
-	mdl = mdh.create(HIDDEN_DIM, VOCAB_SIZE, LAYER_NUM)
-
-debug('Creating trainer...')
-trainer = Trainer(MODEL, mdl, DATA_DIR, ALPHA_DIR)
+debug("Creating TextRNN...")
+net = TextRNN(DATA_DIR, ALPHA_DIR, MODEL, BATCH_SIZE, HIDDEN_DIM, SEQ_LENGTH, LAYER_NUM, DEBUG)
 
 # discord
 client = discord.Client()
@@ -65,16 +53,33 @@ async def on_message(message):
 		cmd = message.content[len(PREFIX):].strip()
 		spl = cmd.split()
 		if spl[0] == 'generate':
-			len = 10
+			length = 10
 			initx = None
 			try:
-				len = int(spl[1])
+				length = int(spl[1])
 				initx = int(spl[2])
 			except Exception:
 				pass
-			await client.edit_message(msg, 'Generating...')
-			gen = trainer.generate(None, 10)
+			await client.edit_message(msg, 'Generating {} characters...'.format(length))
+			gen = net.generate(length, None)
 			await client.edit_message(msg, gen)
+		if spl[0] == 'train':
+			epochs = 10
+			try:
+				epochs = int(spl[1])
+			except Exception:
+				pass
+			await client.edit_message(msg, 'Training {} times...'.format(epochs))
+			net.train(epochs)
+			await client.edit_message(msg, 'Done training...')
+		if spl[0] == 'retrain':
+			epochs = 10
+			try:
+				epochs = int(spl[1])
+			except Exception:
+				pass
+			await client.edit_message(msg, 'Deleting old model and training {} times...'.format(epochs))
+			net.retrain(epochs)
 
 debug('Attempting login with token {}'.format(TOKEN))
 client.run(TOKEN)

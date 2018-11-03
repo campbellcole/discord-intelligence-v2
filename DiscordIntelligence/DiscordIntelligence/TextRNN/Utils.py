@@ -2,26 +2,46 @@ from __future__ import print_function
 import numpy as np
 import re
 
+DEBUG = False
+
+def set_debug(dbg):
+	print('testing1 {}'.format(dbg))
+	DEBUG = dbg
+	print('testing2 {}'.format(DEBUG))
+
+def debug(out):
+	print('testing3 {}'.format(DEBUG))
+	if DEBUG:
+		print(out)
+
 def load_data(data_dir, alphabet_dir, seq_length):
+	debug('[Utils]: Reading study data...')
 	data = open(data_dir, 'r', encoding="utf8").read()
+	debug('[Utils]: {} characters.'.format(len(data)))
+	debug('[Utils]: Reading alphabet...')
 	chars = open(alphabet_dir, 'r', encoding="utf8").read()
+	debug('[Utils]: {} characters.'.format(len(chars)))
+	debug('[Utils]: Converting alphabet to list...')
 	chars = list(set(chars))
+	debug('[Utils]: Sorting alphabet...')
 	chars.sort()
 	VOCAB_SIZE = len(chars)
 
+	debug('[Utils]: Removing duplicate characters from alphabet...')
 	data = ''.join([ch for ch in data if ch in chars])
 
-	#print('Data length: {} characters'.format(len(data)))
-	#print('Vocabulary size: {} characters'.format(VOCAB_SIZE))
-
+	debug('[Utils]: Enumerating Index->Character')
 	ix_to_char = {ix:char for ix, char in enumerate(chars)}
+	debug('[Utils]: Enumerating Character->Index')
 	char_to_ix = {char:ix for ix, char in enumerate(chars)}
 
 	seg = int(len(data)/seq_length)
 
+	debug('[Utils]: Creating empty arrays...')
 	X = np.zeros((seg, seq_length, VOCAB_SIZE))
 	y = np.zeros((seg, seq_length, VOCAB_SIZE))
 
+	debug('[Utils]: Populating arrays with study data...')
 	for i in range(0, seg):
 		X_sequence = data[i*seq_length:(i+1)*seq_length]
 		X_sequence_ix = [char_to_ix[value] for value in X_sequence]

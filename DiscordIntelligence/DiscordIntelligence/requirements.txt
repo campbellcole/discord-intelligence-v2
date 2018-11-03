@@ -58,7 +58,7 @@ packaging==18.0
 pandocfilters==1.4.2
 parso==0.3.1
 pickleshare==0.7.5
-prompt-toolkit==2.0.7
+prompt-toolkit<2.0.0,>=1.0.0
 protobuf==3.6.1
 psutil==5.4.8
 pycodestyle==2.4.0
@@ -108,6 +108,4 @@ win-inet-pton==1.0.1
 win-unicode-console==0.5
 wincertstore==0.2
 wrapt==1.10.11
-mkl-fft==1.0.0
-mkl-random==1.0.1
 setuptools<=39.1.0
