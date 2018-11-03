@@ -106,3 +106,4 @@ venv.bak/
 */.vs/*
 /DiscordIntelligence/DiscordIntelligence/res
 /DiscordIntelligence/DiscordIntelligence/DiscordIntelligence.pyproj.user
+/DiscordIntelligence/DiscordIntelligence/start.bat
