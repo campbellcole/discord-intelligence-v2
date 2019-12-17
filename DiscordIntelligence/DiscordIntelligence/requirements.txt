@@ -73,7 +73,7 @@ pysocks==1.6.8
 python-dateutil==2.7.5
 pytz==2018.7
 pywin32-ctypes==0.2.0     # via keyring
-pyyaml==3.13
+pyyaml==5.1
 pyzmq==17.1.2
 qtawesome==0.5.2
 qtconsole==4.4.2
