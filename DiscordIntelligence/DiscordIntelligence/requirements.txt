@@ -102,7 +102,7 @@ wcwidth==0.1.7
 webencodings==0.5.1
 websocket-client==0.54.0
 websockets==3.4           # via discord.py
-werkzeug==0.14.1
+werkzeug==0.15.3
 wheel==0.32.2
 win-inet-pton==1.0.1
 win-unicode-console==0.5
