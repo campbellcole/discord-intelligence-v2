@@ -90,7 +90,7 @@ sphinxcontrib-websupport==1.1.0
 spyder-kernels==0.2.6     # via spyder
 spyder==3.3.1
 tensorboard==1.11.0
-tensorflow-gpu==1.15.0
+tensorflow-gpu==1.15.4
 tensorflow==1.11.0
 termcolor==1.1.0
 testpath==0.4.2
