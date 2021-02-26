@@ -1,5 +1,5 @@
 absl-py==0.6.1
-aiohttp==1.0.5            # via discord.py
+aiohttp==3.7.4            # via discord.py
 alabaster==0.7.12
 asn1crypto==0.24.0
 astor==0.7.1
