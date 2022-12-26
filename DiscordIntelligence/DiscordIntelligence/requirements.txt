@@ -103,7 +103,7 @@ webencodings==0.5.1
 websocket-client==0.54.0
 websockets==3.4           # via discord.py
 werkzeug==0.15.3
-wheel==0.32.2
+wheel==0.38.1
 win-inet-pton==1.0.1
 win-unicode-console==0.5
 wincertstore==0.2
